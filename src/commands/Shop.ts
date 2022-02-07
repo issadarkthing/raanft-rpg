@@ -16,6 +16,7 @@ import { Pet } from "../structure/Pet";
 import { Skill } from "../structure/Skill";
 import { Helmet } from "../structure/Helmet";
 import { Chest } from "../structure/Chest";
+import { Leg } from "../structure/Leg";
 
 interface ItemLike {
   name: string;
@@ -48,6 +49,7 @@ export default class extends Command {
       switch (arg1) {
         case "chest": items = Chest.all; break;
         case "helmet": items = Helmet.all; break;
+        case "leg": items = Leg.all; break;
         case "weapon": items = Weapon.all; break;
         case "pet": items = Pet.all; break;
         case "skill": items = Skill.all; break;
@@ -102,6 +104,7 @@ export default class extends Command {
       **Categories**
       chest
       helmet
+      leg
       pet
       skill
       ------
