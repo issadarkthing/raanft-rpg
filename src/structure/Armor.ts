@@ -4,14 +4,28 @@ import { Player } from "../structure/Player";
 
 export abstract class Armor extends BaseArmor {
   abstract price: number;
+  abstract readonly ARMOR_MARKUP: number;
+  abstract readonly PRICE_MARKUP: number;
 
   static get all(): Armor[] {
+    const { Helmet } = require("./Helmet");
+    const { Chest } = require("./Chest");
     return [
-      new Helmet(),
-      new ChestPlate(),
-      new Leggings(),
-      new Boots(),
-    ];
+      ...Helmet.all as Armor[],
+      ...Chest.all as Armor[],
+    ].sort((a, b) => a.price - b.price);
+  }
+
+  protected increaseArmor(multiplier: number) {
+    for (let i = 0; i < multiplier; i++) {
+      this.armor += this.armor * this.ARMOR_MARKUP;
+    }
+  }
+
+  protected increasePrice(multiplier: number) {
+    for (let i = 0; i < multiplier; i++) {
+      this.price += Math.round(this.price * this.PRICE_MARKUP);
+    }
   }
 
   async buy(msg: Message) {
@@ -39,31 +53,3 @@ export abstract class Armor extends BaseArmor {
   }
 }
 
-
-export class Helmet extends Armor {
-  id = "helmet";
-  name = "Helmet";
-  price = 8500;
-  armor = 0.005
-}
-
-export class ChestPlate extends Armor {
-  id = "chest_plate";
-  name = "Chest Plate";
-  price = 5000;
-  armor = 0.006
-}
-
-export class Leggings extends Armor {
-  id = "leggings";
-  name = "Leggings";
-  price = 4500;
-  armor = 0.008
-}
-
-export class Boots extends Armor {
-  id = "boots";
-  name = "Boots";
-  price = 5500;
-  armor = 0.011
-}
