@@ -18,10 +18,10 @@ export class Chest extends Armor {
 
   static get all(): ChestItem[] {
     return data.map((x, i) => { 
-      const helmet = new ChestItem(x);
-      helmet.increaseArmor(i);
-      helmet.increasePrice(i);
-      return helmet;
+      const item = new ChestItem(x);
+      item.increaseArmor(i);
+      item.increasePrice(i);
+      return item;
     });
   }
 }
