@@ -91,24 +91,6 @@ export function formatPercent(num: number) {
   return `${(num * 100).toFixed(2)}%`
 }
 
-export function createSeed(id: string) {
-  return id.split("").map(x => x.charCodeAt(0));
-}
-
 export function cap(str: string) {
   return str[0].toUpperCase() + str.slice(1);
-}
-
-
-export function applyMixins(derivedCtor: any, constructors: any[]) {
-  constructors.forEach((baseCtor) => {
-    Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) => {
-      Object.defineProperty(
-        derivedCtor.prototype,
-        name,
-        Object.getOwnPropertyDescriptor(baseCtor.prototype, name) ||
-          Object.create(null)
-      );
-    });
-  });
 }

@@ -7,7 +7,6 @@ import {
   validateNumber,
   cap, 
 } from "../utils";
-import { Armor } from "../structure/Armor";
 import { Command } from "@jiman24/commandment";
 import { ButtonHandler } from "@jiman24/discordjs-button";
 import { stripIndents } from "common-tags";
@@ -15,7 +14,8 @@ import { Item } from "../structure/Item";
 import { Weapon } from "../structure/Weapon";
 import { Pet } from "../structure/Pet";
 import { Skill } from "../structure/Skill";
-import { MessageEmbed } from "../structure/MessageEmbed";
+import { Helmet } from "../structure/Helmet";
+import { Chest } from "../structure/Chest";
 
 interface ItemLike {
   name: string;
@@ -46,7 +46,8 @@ export default class extends Command {
       let items = [] as Item[] | null;
 
       switch (arg1) {
-        case "armor": items = Armor.all; break;
+        case "chest": items = Chest.all; break;
+        case "helmet": items = Helmet.all; break;
         case "weapon": items = Weapon.all; break;
         case "pet": items = Pet.all; break;
         case "skill": items = Skill.all; break;
@@ -86,7 +87,8 @@ export default class extends Command {
         itemList += "\n----\n";
         itemList += `To select an item on index 1, use \`${prefix}${this.name} ${category} 1\``;
 
-        const embed = new MessageEmbed(msg.author)
+        const embed = new MessageEmbed()
+          .setColor("RANDOM")
           .setTitle(`${cap(category)} Shop`)
           .setDescription(itemList)
 
@@ -98,8 +100,8 @@ export default class extends Command {
 
     const rpgList = stripIndents`
       **Categories**
-      armor
-      weapon
+      chest
+      helmet
       pet
       skill
       ------
