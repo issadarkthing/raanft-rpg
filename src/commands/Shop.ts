@@ -17,6 +17,7 @@ import { Skill } from "../structure/Skill";
 import { Helmet } from "../structure/Helmet";
 import { Chest } from "../structure/Chest";
 import { Leg } from "../structure/Leg";
+import { Boots } from "../structure/Boots";
 
 interface ItemLike {
   name: string;
@@ -50,6 +51,7 @@ export default class extends Command {
         case "chest": items = Chest.all; break;
         case "helmet": items = Helmet.all; break;
         case "leg": items = Leg.all; break;
+        case "boots": items = Boots.all; break;
         case "weapon": items = Weapon.all; break;
         case "pet": items = Pet.all; break;
         case "skill": items = Skill.all; break;
