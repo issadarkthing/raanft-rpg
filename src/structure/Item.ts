@@ -11,11 +11,13 @@ export abstract class Item {
   abstract show(): MessageEmbed;
   abstract buy(msg: Message): void;
   static get all() {
+    const { Ring } = require("./Ring");
     return [
       ...Armor.all,
       ...Weapon.all,
       ...Pet.all,
       ...Skill.all,
+      ...Ring.all,
     ];
   }
 }

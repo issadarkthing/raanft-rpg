@@ -19,6 +19,7 @@ import { Chest } from "../structure/Chest";
 import { Leg } from "../structure/Leg";
 import { Boots } from "../structure/Boots";
 import { Necklace } from "../structure/Necklaces";
+import { Ring } from "../structure/Ring";
 
 interface ItemLike {
   name: string;
@@ -49,14 +50,15 @@ export default class extends Command {
       let items = [] as Item[] | null;
 
       switch (arg1) {
-        case "chest": items = Chest.all; break;
-        case "helmet": items = Helmet.all; break;
+        case "chest":    items = Chest.all; break;
+        case "helmet":   items = Helmet.all; break;
         case "necklace": items = Necklace.all; break;
-        case "leg": items = Leg.all; break;
-        case "boots": items = Boots.all; break;
-        case "weapon": items = Weapon.all; break;
-        case "pet": items = Pet.all; break;
-        case "skill": items = Skill.all; break;
+        case "leg":      items = Leg.all; break;
+        case "boots":    items = Boots.all; break;
+        case "ring":     items = Ring.all; break;
+        case "weapon":   items = Weapon.all; break;
+        case "pet":      items = Pet.all; break;
+        case "skill":    items = Skill.all; break;
         default: items = null;
       }
 
@@ -110,6 +112,7 @@ export default class extends Command {
       helmet
       weapon
       necklace
+      ring
       leg
       pet
       skill
