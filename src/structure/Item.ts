@@ -1,4 +1,6 @@
+import { ButtonHandler } from "@jiman24/discordjs-button";
 import { Message, MessageEmbed } from "discord.js";
+import { remove } from "../utils";
 import { Player } from "./Player";
 
 export abstract class Item {
@@ -7,6 +9,47 @@ export abstract class Item {
   abstract price: number;
   abstract apply(player: Player): void;
   abstract show(): MessageEmbed;
+
+  // add buttons to the menu button with their respective actions
+  actions(msg: Message, menu: ButtonHandler, player: Player) {
+
+    if (player.equippedItems.some(x => x.id === this.id)) {
+
+      menu.addButton("unequip", () => {
+        const { Pet } = require("./Pet");
+        const { Skill } = require("./Skill");
+
+        if (this instanceof Pet) {
+          player.pet = undefined;
+        } else if (this instanceof Skill) {
+          player.skill = undefined;
+        }
+
+        player.equippedItems = remove(this, player.equippedItems);
+        player.save();
+
+        msg.channel.send(`Successfully unequipped **${this.name}**`);
+      })
+
+    } else {
+
+      menu.addButton("equip", () => {
+
+        const equippedKind = player.equippedItems
+          .find(x => x.constructor.name === this.constructor.name);
+
+        if (equippedKind) {
+          player.equippedItems = remove(equippedKind, player.equippedItems);
+        }
+
+        player.equippedItems.push(this);
+        player.save();
+
+        msg.channel.send(`Successfully equipped **${this.name}**`);
+
+      })
+    }
+  }
 
   buy(msg: Message) {
     const player = Player.fromUser(msg.author);
@@ -26,6 +69,10 @@ export abstract class Item {
 
     player.save();
     msg.channel.send(`Successfully bought **${this.name}**!`);
+  }
+
+  static get(id: string) {
+    return Item.all.find(x => x.id === id);
   }
 
   static get all() {

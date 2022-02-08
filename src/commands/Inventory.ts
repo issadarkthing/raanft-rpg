@@ -1,9 +1,9 @@
 import { Command } from "@jiman24/commandment";
-import { Message } from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
 import { ButtonHandler } from "@jiman24/discordjs-button";
 import { Player } from "../structure/Player";
 import { DIAMOND, toNList, validateNumber } from "../utils";
-import { MessageEmbed } from "../structure/MessageEmbed";
+
 
 export default class extends Command {
   name = "inventory";
@@ -12,7 +12,6 @@ export default class extends Command {
   maxWeapon = 2; // max equipped weapon
 
   async exec(msg: Message, args: string[]) {
-
 
     const player = Player.fromUser(msg.author);
     const [arg1] = args;
@@ -57,7 +56,7 @@ export default class extends Command {
 
     footer += `${DIAMOND}: equipped/active`;
 
-    const embed = new MessageEmbed(msg.author)
+    const embed = new MessageEmbed()
       .setColor("RANDOM")
       .setTitle("Inventory")
       .setDescription(inventoryList + footer);
