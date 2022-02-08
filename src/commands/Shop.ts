@@ -109,12 +109,13 @@ export default class extends Command {
 
     const rpgList = stripIndents`
       **Categories**
-      chest
       helmet
+      chest
+      leg
+      boots
       weapon
       necklace
       ring
-      leg
       pet
       skill
       ------
