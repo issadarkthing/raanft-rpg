@@ -87,6 +87,7 @@ export default class extends Command {
         await menu.run();
 
         return;
+
       } else {
 
         let [itemList] = this.toList(items);

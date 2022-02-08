@@ -3,10 +3,6 @@ import { client } from "../index";
 import { Player as PlayerRPG } from "@jiman24/discordjs-rpg";
 import { code } from "../utils";
 import { Item } from "./Item";
-import { Armor } from "./Armor";
-import { Weapon } from "./Weapon";
-import { Pet } from "./Pet";
-import { Skill } from "./Skill";
 
 export class Player extends PlayerRPG {
   name: string;
@@ -16,6 +12,7 @@ export class Player extends PlayerRPG {
   win = 0;
   hunt = 0;
   inventory: Item[] = [];
+  equippedItems: Item[] = [];
 
   constructor(user: User, imageUrl: string) {
     super(user);
@@ -40,36 +37,16 @@ export class Player extends PlayerRPG {
     player.critDamage += offset * 0.01;
 
     player.inventory = player.inventory
-      .map(inv => Item.all.find(x => x.id === inv.id)!);
+      .map(inv => Item.get(inv.id)!);
 
-    const pet = player.pet;
-    if (pet) {
-      const validPet = Pet.all.find(x => x.id === pet.id);
-      validPet?.setOwner(player);
+    player.equippedItems = player.equippedItems
+      .map(item => Item.get(item.id)!);
+
+    for (const item of player.equippedItems) {
+      item.apply(player);
     }
 
-    const skill = player.skill;
-    if (skill) {
-      const validSkill = Skill.all.find(x => x.id === skill.id);
-      validSkill?.setOwner(player);
-    }
-
-    const equippedArmors = player.equippedArmors
-      .map(inv => Armor.all.find(x => x.id === inv.id)!);
-
-    const equippedWeapons = player.equippedWeapons
-      .map(inv => Weapon.all.find(x => x.id === inv.id)!);
-
-    player.equippedArmors = [];
-    player.equippedWeapons = [];
-
-    for (const armor of equippedArmors) {
-      player.equipArmor(armor);
-    }
-
-    for (const weapon of equippedWeapons) {
-      player.equipWeapon(weapon);
-    }
+    player.save();
 
     return player;
   }
