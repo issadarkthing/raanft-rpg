@@ -78,16 +78,13 @@ export abstract class Item {
   }
 
   static get all() {
-    const { Armor } = require("./Armor");
-    const { Weapon } = require("./Weapon");
-    const { Pet } = require("./Pet");
-    const { Skill } = require("./Skill");
-
+    const { Ring } = require("./Ring");
     return [
       ...Armor.all,
       ...Weapon.all,
       ...Pet.all,
       ...Skill.all,
+      ...Ring.all,
     ];
   }
 }
