@@ -1,8 +1,4 @@
 import { Message, MessageEmbed } from "discord.js";
-import { Armor } from "./Armor";
-import { Weapon } from "./Weapon";
-import { Pet } from "./Pet";
-import { Skill } from "./Skill";
 import { Player } from "./Player";
 
 export abstract class Item {
@@ -11,49 +7,6 @@ export abstract class Item {
   abstract price: number;
   abstract apply(player: Player): void;
   abstract show(): MessageEmbed;
-  abstract apply(player: Player): void;
-
-  // add buttons to the menu button with their respective actions
-  actions(msg: Message, menu: ButtonHandler, player: Player) {
-
-    if (player.equippedItems.some(x => x.id === this.id)) {
-
-      menu.addButton("unequip", () => {
-        const { Pet } = require("./Pet");
-        const { Skill } = require("./Skill");
-
-        if (this instanceof Pet) {
-          delete player.pet;
-        } else if (this instanceof Skill) {
-          delete player.skill;
-        }
-
-        player.equippedItems = remove(this, player.equippedItems);
-        player.save();
-
-        msg.channel.send(`Successfully unequipped **${this.name}**`);
-      })
-
-    } else {
-
-      menu.addButton("equip", () => {
-
-        const equippedKind = player.equippedItems
-          .find(x => x.constructor.name === this.constructor.name);
-
-        if (equippedKind) {
-          player.equippedItems = remove(equippedKind, player.equippedItems);
-          msg.channel.send(`Successfully unequipped **${equippedKind.name}**`);
-        }
-
-        player.equippedItems.push(this);
-        player.save();
-
-        msg.channel.send(`Successfully equipped **${this.name}**`);
-
-      })
-    }
-  }
 
   buy(msg: Message) {
     const player = Player.fromUser(msg.author);
@@ -73,15 +26,14 @@ export abstract class Item {
 
     player.save();
     msg.channel.send(`Successfully bought **${this.name}**!`);
-    msg.channel.send(`Use command \`!inventory\` to equip item`);
-  }
-
-  static get(id: string) {
-    return Item.all.find(x => x.id === id);
   }
 
   static get all() {
     const { Ring } = require("./Ring");
+    const { Armor } = require("./Armor");
+    const { Weapon } = require("./Weapon");
+    const { Pet } = require("./Pet");
+    const { Skill } = require("./Skill");
     return [
       ...Armor.all,
       ...Weapon.all,

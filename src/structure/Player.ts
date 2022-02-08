@@ -105,9 +105,7 @@ export class Player extends PlayerRPG {
 
     profile.fields[petIndex].inline = true;
 
-    profile.spliceFields(armorIndex, 2);
-
-    profile.addField(currency, code(this.coins), true);
+    profile.addField("Coins", code(this.coins), true);
     profile.addField("Win", code(this.win), true);
     profile.addField("Hunt", code(this.hunt), true);
 
