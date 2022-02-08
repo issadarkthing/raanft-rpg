@@ -46,8 +46,27 @@ export class Player extends PlayerRPG {
       .filter(x => !!x)
       .map(item => Item.get(item.id)!);
 
-    for (const item of player.equippedItems) {
-      item.apply(player);
+    const skill = player.skill;
+    if (skill) {
+      const validSkill = Skill.all.find(x => x.id === skill.id);
+      validSkill?.setOwner(player);
+    }
+
+    const equippedArmors = player.equippedArmors
+      .map(inv => Armor.all.find(x => x.id === inv.id)!);
+
+    const equippedWeapons = player.equippedWeapons
+      .map(inv => Weapon.all.find(x => x.id === inv.id)!);
+
+    player.equippedArmors = [];
+    player.equippedWeapons = [];
+
+    for (const armor of equippedArmors) {
+      player.equipArmor(armor);
+    }
+
+    for (const weapon of equippedWeapons) {
+      player.equipWeapon(weapon);
     }
 
     return player;

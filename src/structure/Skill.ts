@@ -21,6 +21,30 @@ export abstract class Skill extends BaseSkill {
   apply(player: Player) {
     this.setOwner(player);
   }
+
+  async buy(msg: Message) {
+
+    const player = Player.fromUser(msg.author);
+
+    if (player.coins < this.price) {
+      msg.channel.send("Insufficient amount");
+      return;
+    }
+
+    if (
+      player.inventory.some(x => x.id === this.id) ||
+      player.skill?.id === this.id
+    ) {
+      msg.channel.send("You already own this skill");
+      return;
+    }
+
+    player.coins -= this.price;
+    player.inventory.push(this);
+
+    player.save();
+    msg.channel.send(`Successfully bought **${this.name}**`);
+  }
 }
 
 export class LaserEyes extends Skill {
