@@ -1,7 +1,7 @@
 import { User } from "discord.js";
 import { client } from "../index";
 import { Player as PlayerRPG } from "@jiman24/discordjs-rpg";
-import { code, currency } from "../utils";
+import { code } from "../utils";
 import { Item } from "./Item";
 
 export class Player extends PlayerRPG {
@@ -82,6 +82,12 @@ export class Player extends PlayerRPG {
 
     profile.spliceFields(armorIndex, 2);
 
+    const petIndex = 7;
+
+    profile.fields[petIndex].inline = true;
+
+    profile.spliceFields(armorIndex, 2);
+
     profile.addField(currency, code(this.coins), true);
     profile.addField("Win", code(this.win), true);
     profile.addField("Hunt", code(this.hunt), true);
@@ -92,6 +98,7 @@ export class Player extends PlayerRPG {
 
     profile.addField("Level", code(this.level), true);
     profile.addField("xp", `\`${this.xp}/${this.requiredXP()}\``, true);
+
 
     return profile;
   }
