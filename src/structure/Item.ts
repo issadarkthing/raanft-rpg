@@ -40,6 +40,7 @@ export abstract class Item {
 
         if (equippedKind) {
           player.equippedItems = remove(equippedKind, player.equippedItems);
+          msg.channel.send(`Successfully unequipped **${equippedKind.name}**`);
         }
 
         player.equippedItems.push(this);
