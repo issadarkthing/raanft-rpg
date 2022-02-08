@@ -1,6 +1,9 @@
-import { Message } from "discord.js";
 import { Pet as BasePet } from "@jiman24/discordjs-rpg";
+import { applyMixins } from "../utils";
+import { Item } from "./Item";
 import { Player } from "./Player";
+
+export interface Pet extends Item {};
 
 export abstract class Pet extends BasePet {
   abstract price: number;
@@ -18,28 +21,9 @@ export abstract class Pet extends BasePet {
   apply(player: Player) {
     this.setOwner(player);
   }
-
-  async buy(msg: Message) {
-
-    const player = Player.fromUser(msg.author);
-
-    if (player.coins < this.price) {
-      msg.channel.send("Insufficient amount");
-      return;
-    }
-
-    if (player.inventory.some(x => x.id === this.id)) {
-      msg.channel.send("You already own this item");
-      return;
-    }
-
-    player.coins -= this.price;
-    player.inventory.push(this);
-
-    player.save();
-    msg.channel.send(`Successfully bought **${this.name}**!`);
-  }
 }
+
+applyMixins(Pet, [Item]);
 
 export class Slime extends Pet {
   name = "Slime";
