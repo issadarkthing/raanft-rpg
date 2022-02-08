@@ -106,6 +106,7 @@ export default class extends Command {
       **Categories**
       chest
       helmet
+      weapon
       leg
       pet
       skill
