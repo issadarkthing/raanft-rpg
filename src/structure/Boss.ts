@@ -1,6 +1,6 @@
 import { Fighter } from "@jiman24/discordjs-rpg";
 import { currency } from "../utils";
-import { Defense, Heal, Rage } from "../structure/Skill";
+import { Defense, Heal, FlameEyes } from "../structure/Skill";
 import { Phoenix, Slime, Titan } from "./Pet";
 
 export abstract class Boss extends Fighter {
@@ -59,7 +59,7 @@ export class Vortexscreamer extends Boss {
   constructor(name: string) {
     super(name);
 
-    const skill = new Rage(); 
+    const skill = new FlameEyes(); 
     skill.setOwner(this);
 
     const pet = new Phoenix()

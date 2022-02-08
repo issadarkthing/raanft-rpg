@@ -12,7 +12,7 @@ export abstract class Skill extends BaseSkill {
 
   static get all(): Skill[] {
     return [
-      new Rage(),
+      new FlameEyes(),
       new Heal(),
       new Defense(),
     ];
@@ -23,13 +23,40 @@ export abstract class Skill extends BaseSkill {
   }
 }
 
-applyMixins(Skill, [Item]);
+export class LaserEyes extends Skill {
+  name = "Laser Eyes";
+  id = "laser_eyes";
+  description = "Does triple damage when activated temporarily";
+  price = 185_000;
 
-export class Rage extends Skill {
-  name = "Rage";
-  id = "rage";
+  use(p1: Fighter, _p2: Fighter) {
+
+    p1.attack *= 3;
+
+    const embed = new MessageEmbed()
+      .setTitle("Skill interception")
+      .setColor("GREEN")
+      .setDescription(
+        oneLine`${p1.name} uses **${this.name} Skill** and increases their
+        strength to ${code(p1.attack)}!`
+      )
+
+    if (this.imageUrl)
+      embed.setThumbnail(this.imageUrl);
+
+    return embed;
+  }
+
+  close(p1: Fighter, _p2: Fighter) {
+    p1.attack /= 3;
+  }
+}
+
+export class FlameEyes extends Skill {
+  name = "Flame Eyes";
+  id = "flame_eyes";
   description = "Does double damage when activated temporarily";
-  price = 45_000;
+  price = 75_000;
 
   use(p1: Fighter, _p2: Fighter) {
 
