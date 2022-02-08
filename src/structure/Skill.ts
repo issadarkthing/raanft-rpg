@@ -15,6 +15,10 @@ export abstract class Skill extends BaseSkill {
     ];
   }
 
+  apply(player: Player) {
+    this.setOwner(player);
+  }
+
   async buy(msg: Message) {
 
     const player = Player.fromUser(msg.author);

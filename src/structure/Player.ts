@@ -51,7 +51,7 @@ export class Player extends PlayerRPG {
     const skill = player.skill;
     if (skill) {
       const validSkill = Skill.all.find(x => x.id === skill.id);
-      player.skill = validSkill;
+      validSkill?.setOwner(player);
     }
 
     const equippedArmors = player.equippedArmors

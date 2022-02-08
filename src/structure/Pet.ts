@@ -15,6 +15,10 @@ export abstract class Pet extends BasePet {
     ];
   }
 
+  apply(player: Player) {
+    this.setOwner(player);
+  }
+
   async buy(msg: Message) {
 
     const player = Player.fromUser(msg.author);

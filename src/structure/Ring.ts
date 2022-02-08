@@ -55,6 +55,10 @@ class StrengthRing extends Ring {
   name = "Strength Ring";
   description = "Increases attack by 20%";
   price = 60_000;
+
+  apply(player: Player) {
+    player.attack += Math.round(player.attack * 0.2);
+  }
 }
 
 class DefenseRing extends Ring {
@@ -62,6 +66,10 @@ class DefenseRing extends Ring {
   name = "Defence Ring";
   description = "Increases defence by 20%";
   price = 55_000;
+
+  apply(player: Player) {
+    player.armor += player.armor * 0.2;
+  }
 }
 
 class BerserkerRing extends Ring {
@@ -69,4 +77,8 @@ class BerserkerRing extends Ring {
   name = "Berserker Ring";
   description = "Increases crit damage by 20%";
   price = 80_000;
+
+  apply(player: Player) {
+    player.critDamage += player.critDamage * 0.2;
+  }
 }

@@ -26,6 +26,10 @@ export abstract class Weapon extends BaseWeapon {
     }
   }
 
+  apply(player: Player) {
+    player.attack += this.attack;
+  }
+
   async buy(msg: Message) {
 
     const player = Player.fromUser(msg.author);

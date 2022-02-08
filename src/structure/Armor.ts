@@ -28,6 +28,10 @@ export abstract class Armor extends BaseArmor {
     }
   }
 
+  apply(player: Player) {
+    player.armor += this.armor;
+  }
+
   async buy(msg: Message) {
 
     const player = Player.fromUser(msg.author);
