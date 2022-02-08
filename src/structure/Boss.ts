@@ -1,7 +1,7 @@
 import { Fighter } from "@jiman24/discordjs-rpg";
 import { currency } from "../utils";
 import { Defense, Heal, Rage } from "../structure/Skill";
-import { Phoenix, Slime, Titanoboa } from "./Pet";
+import { Phoenix, Slime, Titan } from "./Pet";
 
 export abstract class Boss extends Fighter {
   abstract drop: number;
@@ -83,7 +83,7 @@ export class Rottingseeker extends Boss {
     const skill = new Defense(); 
     skill.setOwner(this);
 
-    const pet = new Titanoboa()
+    const pet = new Titan()
     pet.setOwner(this);
   }
 }
