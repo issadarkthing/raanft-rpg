@@ -54,14 +54,7 @@ export class Player extends PlayerRPG {
         .seconds < 0;
 
       if (isExpired) {
-        player.activePotions = 
-          removeBy(x => x.potion.id === potion.id, player.activePotions);
-
-        player.equippedItems = 
-          removeBy(x => x.id === potion.id, player.equippedItems);
-
-        player.inventory = 
-          removeBy(x => x.id === potion.id, player.inventory);
+        potion.removePotion(player);
       }
     }
 

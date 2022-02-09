@@ -17,6 +17,16 @@ export abstract class Potion extends Item {
     ];
   }
 
+  removePotion(player: Player) {
+    player.activePotions = 
+      removeBy(x => x.potion.id === this.id, player.activePotions);
+
+    player.inventory = 
+      removeBy(x => x.id === this.id, player.inventory);
+
+    player.equippedItems = 
+      removeBy(x => x.id === this.id, player.equippedItems);
+  }
 
   actions(msg: Message, menu: ButtonHandler, player: Player) {
 
@@ -24,15 +34,7 @@ export abstract class Potion extends Item {
 
       menu.addButton("deactivate", () => {
 
-        player.activePotions = 
-          removeBy(x => x.potion.id === this.id, player.activePotions);
-
-        player.inventory = 
-          removeBy(x => x.id === this.id, player.inventory);
-
-        player.equippedItems = 
-          removeBy(x => x.id === this.id, player.equippedItems);
-
+        this.removePotion(player);
         player.save();
 
         msg.channel.send(`Successfully deactivated **${this.name}**`);
