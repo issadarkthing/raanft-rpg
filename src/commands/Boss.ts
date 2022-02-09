@@ -17,7 +17,6 @@ import { MessageEmbed } from "../structure/MessageEmbed";
 export default class extends Command {
   name = "boss";
   description = "fight boss";
-  disable = true;
 
   async exec(msg: Message, args: string[]) {
 
