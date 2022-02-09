@@ -82,12 +82,14 @@ export abstract class Item {
     const { Weapon } = require("./Weapon");
     const { Pet } = require("./Pet");
     const { Skill } = require("./Skill");
+    const { Potion } = require("./Potion");
     return [
       ...Armor.all,
       ...Weapon.all,
       ...Pet.all,
       ...Skill.all,
       ...Ring.all,
+      ...Potion.all,
     ];
   }
 }
