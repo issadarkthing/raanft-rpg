@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { MersenneTwister19937, Random } from "random-js";
 import { isDeepStrictEqual } from "util"
 
@@ -86,6 +87,19 @@ export function remove<T>(item: T, arr: T[], count = 1) {
   return arr;
 }
 
+export function removeBy<T>(fn: (x: T) => boolean, arr: T[], count = 1) {
+  const copy = [...arr];
+
+  for (let i = 0; i < count; i++) {
+    const index = copy.findIndex(fn);
+
+    if (index !== -1) {
+      copy.splice(index, 1);
+    }
+  }
+
+  return copy;
+}
 
 export function formatPercent(num: number) {
   return `${(num * 100).toFixed(2)}%`
@@ -106,4 +120,10 @@ export function applyMixins(derivedCtor: any, constructors: any[]) {
       );
     });
   });
+}
+
+export function timeLeft(time: Date) {
+  const expiryDate = DateTime.fromJSDate(time);
+  const diff = expiryDate.diffNow();
+  return diff.toFormat("`(hh:mm:ss)`");
 }

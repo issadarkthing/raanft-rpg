@@ -1,8 +1,11 @@
 import { User } from "discord.js";
 import { client } from "../index";
 import { Player as PlayerRPG } from "@jiman24/discordjs-rpg";
-import { code } from "../utils";
+import { code, removeBy, timeLeft } from "../utils";
 import { Item } from "./Item";
+import { Potion } from "./Potion";
+import { DateTime } from "luxon";
+import { remove } from "@jiman24/discordjs-utils";
 
 export class Player extends PlayerRPG {
   name: string;
@@ -13,6 +16,7 @@ export class Player extends PlayerRPG {
   hunt = 0;
   inventory: Item[] = [];
   equippedItems: Item[] = [];
+  activePotions: { potion: Potion, expires: Date }[] = [];
 
   constructor(user: User, imageUrl: string) {
     super(user);
@@ -42,6 +46,24 @@ export class Player extends PlayerRPG {
     player.equippedItems = player.equippedItems
       .map(item => Item.get(item.id)!);
 
+    for (const { potion, expires } of [...player.activePotions]) {
+      const isExpired = DateTime
+        .fromJSDate(expires)
+        .diffNow(["seconds"])
+        .seconds < 0;
+
+      if (isExpired) {
+        player.activePotions = 
+          removeBy(x => x.potion.id === potion.id, player.activePotions);
+
+        player.equippedItems = 
+          removeBy(x => x.id === potion.id, player.equippedItems);
+
+        player.inventory = 
+          removeBy(x => x.id === potion.id, player.inventory);
+      }
+    }
+
     for (const item of player.equippedItems) {
       item.apply(player);
     }
@@ -61,7 +83,6 @@ export class Player extends PlayerRPG {
     }
     return x;
   }
-
 
   /** adds xp and upgrades level accordingly */
   addXP(amount: number) {
@@ -95,6 +116,12 @@ export class Player extends PlayerRPG {
     profile.addField("Level", code(this.level), true);
     profile.addField("xp", `\`${this.xp}/${this.requiredXP()}\``, true);
 
+    const potionsTimeleft = this.activePotions
+      .map(x => `${x.potion.name} ${timeLeft(x.expires)}`);
+
+    if (potionsTimeleft.length > 0) {
+      profile.addField("Active Potions", potionsTimeleft.join("\n"));
+    }
 
     return profile;
   }
