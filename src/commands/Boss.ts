@@ -16,7 +16,6 @@ import { Battle } from "@jiman24/discordjs-rpg";
 export default class extends Command {
   name = "boss";
   description = "fight boss";
-  disable = true;
 
   async exec(msg: Message, args: string[]) {
 
