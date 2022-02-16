@@ -85,13 +85,13 @@ export class Player extends PlayerRPG {
     const amountGot = amount - this._coins;
     const date = DateTime.now();
 
-    const weekID = `${date.weekNumber}-${date.year}`;
-    const weeklyPoints = client.weekly.get(weekID) || [];
-    this.update(this.id, this.name, amountGot, weeklyPoints);
-    client.weekly.set(weekID, weeklyPoints);
+    const dailyID = `${date.daysInYear}-${date.year}`;
+    const dailyPoints = client.daily.get(dailyID) || [];
+    this.update(this.id, this.name, amountGot, dailyPoints);
+    client.daily.set(dailyID, dailyPoints);
 
     const monthID = `${date.month}-${date.year}`;
-    const monthlyPoints = client.monthly.get(monthID) || [];
+    const monthlyPoints = client.daily.get(monthID) || [];
     this.update(this.id, this.name, amountGot, monthlyPoints);
     client.monthly.set(monthID, monthlyPoints);
 

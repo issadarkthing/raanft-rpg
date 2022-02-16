@@ -11,6 +11,6 @@ export interface Leaderboard {
 export class Client extends DiscordClient {
   players = new Enmap("Player");
   commandManager = new CommandManager(process.env.PREFIX || "!");
-  weekly = new Enmap<string, Leaderboard[]>("Weekly");
+  daily = new Enmap<string, Leaderboard[]>("Daily");
   monthly = new Enmap<string, Leaderboard[]>("Monthly");
 }

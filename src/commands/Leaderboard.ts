@@ -39,10 +39,10 @@ export default class extends Command {
   exec(msg: Message) {
 
     const date = DateTime.now();
-    const weekID = `${date.weekNumber}-${date.year}`;
+    const dailyID = `${date.daysInYear}-${date.year}`;
     const monthID = `${date.month}-${date.year}`;
 
-    const weeklyLeaderboard = this.createLeaderboard("Weekly", weekID, client.weekly);
+    const dailyLeaderboard = this.createLeaderboard("Daily", dailyID, client.daily);
     const monthlyLeaderboard = this.createLeaderboard("Monthly", monthID, client.monthly);
 
     const player = client.players.array()
@@ -53,12 +53,12 @@ export default class extends Command {
 
     const embed = new MessageEmbed(msg.author)
       .setColor("RANDOM")
-      .setTitle("Leaderboard")
+      .setTitle("All Time Leaderboard")
       .setDescription(bold(`Name | ${currency}\n`) + player);
 
     msg.channel.send({ 
       embeds: [
-        weeklyLeaderboard,
+        dailyLeaderboard,
         monthlyLeaderboard,
         embed,
       ] 
