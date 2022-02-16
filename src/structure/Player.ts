@@ -1,15 +1,15 @@
 import { User } from "discord.js";
 import { client } from "../index";
 import { Player as PlayerRPG } from "@jiman24/discordjs-rpg";
-import { code, removeBy, timeLeft } from "../utils";
+import { code, timeLeft } from "../utils";
 import { Item } from "./Item";
 import { Potion } from "./Potion";
 import { DateTime } from "luxon";
-import { remove } from "@jiman24/discordjs-utils";
+import { Leaderboard } from "../structure/Client";
 
 export class Player extends PlayerRPG {
   name: string;
-  coins = 0;
+  _coins = 0;
   level = 1;
   xp = 0;
   win = 0;
@@ -64,6 +64,37 @@ export class Player extends PlayerRPG {
     player.save();
 
     return player;
+  }
+
+  private update(userID: string, name: string, amount: number, leaderboard: Leaderboard[]) {
+    const user = leaderboard.find(x => x.id === userID);
+
+    if (user) {
+      user.coins += amount;
+    } else {
+      leaderboard.push({ id: userID, coins: amount, name: name });
+    }
+  }
+
+  get coins() {
+    return this._coins;
+  }
+
+  set coins(amount: number) {
+    const amountGot = amount - this._coins;
+    const date = DateTime.now();
+
+    const weekID = `${date.weekNumber}-${date.year}`;
+    const weeklyPoints = client.weekly.get(weekID) || [];
+    this.update(this.id, this.name, amountGot, weeklyPoints);
+    client.weekly.set(weekID, weeklyPoints);
+
+    const monthID = `${date.month}-${date.year}`;
+    const monthlyPoints = client.monthly.get(monthID) || [];
+    this.update(this.id, this.name, amountGot, monthlyPoints);
+    client.monthly.set(monthID, monthlyPoints);
+
+    this._coins = amount;
   }
 
   /** required xp to upgrade to the next level */
