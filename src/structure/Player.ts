@@ -82,18 +82,20 @@ export class Player extends PlayerRPG {
   }
 
   set coins(amount: number) {
-    const amountGot = amount - this._coins;
-    const date = DateTime.now();
+    if (amount > 0) {
+      const amountGot = amount - this._coins;
+      const date = DateTime.now();
 
-    const dailyID = `${date.daysInYear}-${date.year}`;
-    const dailyPoints = client.daily.get(dailyID) || [];
-    this.update(this.id, this.name, amountGot, dailyPoints);
-    client.daily.set(dailyID, dailyPoints);
+      const dailyID = `${date.daysInYear}-${date.year}`;
+      const dailyPoints = client.daily.get(dailyID) || [];
+      this.update(this.id, this.name, amountGot, dailyPoints);
+      client.daily.set(dailyID, dailyPoints);
 
-    const monthID = `${date.month}-${date.year}`;
-    const monthlyPoints = client.daily.get(monthID) || [];
-    this.update(this.id, this.name, amountGot, monthlyPoints);
-    client.monthly.set(monthID, monthlyPoints);
+      const monthID = `${date.month}-${date.year}`;
+      const monthlyPoints = client.daily.get(monthID) || [];
+      this.update(this.id, this.name, amountGot, monthlyPoints);
+      client.monthly.set(monthID, monthlyPoints);
+    }
 
     this._coins = amount;
   }
