@@ -54,7 +54,7 @@ export default class extends Command {
       })
     );
 
-    let footer = "\n---\n";
+    let footer = "\n---\nto equip an item in inventory 1, use `!inventory 1`";
 
     footer += `${DIAMOND}: equipped/active`;
 
@@ -62,7 +62,6 @@ export default class extends Command {
       .setColor("RANDOM")
       .setTitle("Inventory")
       .setDescription(inventoryList + footer)
-      .setFooter({ text: `to equip an item in inventory 1, use \`!inventory 1\`` })
 
     msg.channel.send({ embeds: [embed] });
 
