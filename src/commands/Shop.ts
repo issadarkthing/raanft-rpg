@@ -50,7 +50,7 @@ export default class extends Command {
     
       let items = [] as Item[] | null;
 
-      switch (arg1) {
+      switch (arg1.toLowerCase()) {
         case "chest":    items = Chest.all; break;
         case "helmet":   items = Helmet.all; break;
         case "necklace": items = Necklace.all; break;
