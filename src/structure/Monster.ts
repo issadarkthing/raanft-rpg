@@ -23,8 +23,8 @@ export class Monster extends Fighter {
 
     this.name = `${level} ${name}`;
     this.difficulty = player.level;
-    this.drop = random.integer(150, 500) * this.difficulty;
-    this.xpDrop = random.integer(10, 35) * this.difficulty;
+    this.drop = random.integer(150, 500) * Math.round(1 + (this.difficulty / 10));
+    this.xpDrop = random.integer(10, 35) * Math.round(1 + (this.difficulty / 10))
     this.attack = player.attack + this.randomAttrib();
     this.hp = player.hp + this.randomAttrib();
     this.armor = player.armor + (this.randomAttrib() / 100);
