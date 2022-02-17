@@ -8,7 +8,8 @@ import { oneLine } from "common-tags";
 
 export default class extends Command {
   name = "duel";
-  description = "duel with other person with bet";
+  description = oneLine`duel with other person with bet. You have to use the
+  command like this !duel @user <amount to bet>`;
   maxCount = 5;
   cooldownTime = 1; // hours
 
