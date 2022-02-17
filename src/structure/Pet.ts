@@ -50,7 +50,7 @@ export class Dragon extends Pet {
 }
 
 export class Titan extends Pet {
-  name = "titan";
+  name = "Titan";
   id = "titan";
   attack = 55;
   interceptRate = 0.4;
