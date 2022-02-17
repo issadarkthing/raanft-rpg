@@ -5,8 +5,8 @@ import { Skill } from "./Skill";
 import { Pet } from "./Pet";
 
 export class Monster extends Fighter {
-  drop = random.integer(150, 500);
-  xpDrop = random.integer(10, 35);
+  drop: number;
+  xpDrop: number;
   difficulty: number;
   
   constructor(player: Player) {
@@ -18,6 +18,8 @@ export class Monster extends Fighter {
 
     this.name = `${level} ${name}`;
     this.difficulty = player.level;
+    this.drop = random.integer(150, 500) * this.difficulty;
+    this.xpDrop = random.integer(10, 35) * this.difficulty;
     this.attack = player.attack + this.randomAttrib();
     this.hp = player.hp + this.randomAttrib();
     this.armor = player.armor + (this.randomAttrib() / 100);
