@@ -83,7 +83,7 @@ class HealPotion extends Potion {
   name = "Heal Potion";
   description = "Increase your health by 20% for 1 hour";
   price = 45_000;
-  duration = time.MINUTE;
+  duration = time.HOUR;
   apply(player: Player): void {
     player.hp += Math.round(player.hp * 0.2);
   }
