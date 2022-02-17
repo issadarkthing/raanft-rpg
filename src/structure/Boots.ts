@@ -3,10 +3,10 @@ import { Armor } from "./Armor";
 export class Boots extends Armor {
   id = "";
   name = "";
-  price = 7800;
+  price = 3000;
   armor = 0.0042;
   readonly ARMOR_MARKUP = 0.08;
-  readonly PRICE_MARKUP = 0.46;
+  readonly PRICE_MARKUP = 0.50;
 
   constructor(data: { name: string, id: string }) {
     super();

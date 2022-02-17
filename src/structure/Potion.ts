@@ -1,6 +1,6 @@
 import { Item } from "./Item";
 import { Player } from "./Player";
-import { remove, time } from "@jiman24/discordjs-utils";
+import { time } from "@jiman24/discordjs-utils";
 import { Message, MessageEmbed } from "discord.js";
 import { ButtonHandler } from "@jiman24/discordjs-button";
 import { DateTime } from "luxon";
@@ -82,7 +82,7 @@ class HealPotion extends Potion {
   id = "heal_potion";
   name = "Heal Potion";
   description = "Increase your health by 20% for 1 hour";
-  price = 85_000;
+  price = 45_000;
   duration = time.MINUTE;
   apply(player: Player): void {
     player.hp += Math.round(player.hp * 0.2);
@@ -94,7 +94,7 @@ class DefensePotion extends Potion {
   name = "Defence Potion";
   description = "Increase your defense by 20% for 1 hour";
   duration: number = time.HOUR;
-  price = 95_000;
+  price = 55_000;
   apply(player: Player): void {
     player.armor += player.armor * 0.2;
   }
