@@ -54,7 +54,8 @@ export class Player extends PlayerRPG {
         .seconds < 0;
 
       if (isExpired) {
-        potion.removePotion(player);
+        const p = Potion.all.find(x => x.id === potion.id);
+        p?.removePotion(player);
       }
     }
 
