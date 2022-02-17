@@ -62,7 +62,8 @@ export default class extends Command {
     const embed = new MessageEmbed()
       .setColor("RANDOM")
       .setTitle("Inventory")
-      .setDescription(inventoryList + footer);
+      .setDescription(inventoryList + footer)
+      .setFooter({ text: `to equip an item in inventory 1, use \`!inventory 1\`` })
 
     msg.channel.send({ embeds: [embed] });
 
