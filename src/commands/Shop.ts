@@ -111,18 +111,18 @@ export default class extends Command {
 
     const rpgList = stripIndents`
       **Categories**
-      helmet
-      chest
-      leg
-      boots
-      weapon
-      necklace
-      ring
-      pet
-      skill
-      potion
+      Helmet
+      Chest
+      Leg
+      Boots
+      Weapon
+      Necklace
+      Ring
+      Pet
+      Skill
+      Potion
       ------
-      To open armor shop use command \`${prefix}${this.name} armor\`
+      To open helmet shop use command \`${prefix}${this.name} helmet\`
       `;
 
       const shop = new MessageEmbed(msg.author)
