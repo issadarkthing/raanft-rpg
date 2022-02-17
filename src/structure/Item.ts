@@ -20,9 +20,9 @@ export abstract class Item {
         const { Skill } = require("./Skill");
 
         if (this instanceof Pet) {
-          player.pet = undefined;
+          delete player.pet;
         } else if (this instanceof Skill) {
-          player.skill = undefined;
+          delete player.skill;
         }
 
         player.equippedItems = remove(this, player.equippedItems);
