@@ -29,7 +29,7 @@ export class LaserEyes extends Skill {
   name = "Laser Eyes";
   id = "laser_eyes";
   description = "Does triple damage when activated temporarily";
-  price = 185_000;
+  price = 155_000;
 
   use(p1: Fighter, _p2: Fighter) {
 
@@ -58,7 +58,7 @@ export class FlameEyes extends Skill {
   name = "Flame Eyes";
   id = "flame_eyes";
   description = "Does double damage when activated temporarily";
-  price = 75_000;
+  price = 65_000;
 
   use(p1: Fighter, _p2: Fighter) {
 
@@ -87,7 +87,7 @@ export class Heal extends Skill {
   name = "Heal";
   id = "heal";
   description = "Heals 20% of hp when activated";
-  price = 55_000;
+  price = 45_000;
   interceptRate = 0.1;
 
   use(p1: Fighter, _p2: Fighter) {
@@ -117,7 +117,7 @@ export class Defense extends Skill {
   name = "Defense";
   id = "defense";
   description = "Increase armor for 10% when activated";
-  price = 50_000;
+  price = 40_000;
   interceptRate = 0.25;
 
   use(p1: Fighter, _p2: Fighter) {
