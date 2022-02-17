@@ -3,11 +3,13 @@ import { Message, MessageEmbed } from "discord.js";
 import { ButtonHandler } from "@jiman24/discordjs-button";
 import { Player } from "../structure/Player";
 import { DIAMOND, toNList, validateNumber } from "../utils";
+import { oneLine } from "common-tags";
 
 
 export default class extends Command {
   name = "inventory";
-  description = "show player's inventory";
+  description = oneLine`show player's inventory. When buying from shop, you need
+  to equip the item in here`;
   aliases = ["i", "inv"];
   maxArmor = 4; // max equipped armor
   maxWeapon = 2; // max equipped weapon
