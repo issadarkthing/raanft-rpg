@@ -41,9 +41,11 @@ export class Player extends PlayerRPG {
     player.critDamage += offset * 0.01;
 
     player.inventory = player.inventory
+      .filter(x => !!x)
       .map(inv => Item.get(inv.id)!);
 
     player.equippedItems = player.equippedItems
+      .filter(x => !!x)
       .map(item => Item.get(item.id)!);
 
     for (const { potion, expires } of [...player.activePotions]) {
