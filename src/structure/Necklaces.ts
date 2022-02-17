@@ -17,7 +17,7 @@ export class Necklace extends BaseWeapon {
 
   static get all(): NecklaceItem[] {
     return data.map((x, i) => { 
-      const item = new Necklace(x);
+      const item = new NecklaceItem(x);
       item.increaseAttack(i);
       item.increasePrice(i);
       return item;
