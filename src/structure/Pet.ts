@@ -34,7 +34,7 @@ export class Slime extends Pet {
   id = "slime";
   attack = 15;
   interceptRate = 0.2;
-  price = 15000;
+  price = 5000;
 }
 
 export class Snake extends Pet {
@@ -42,7 +42,7 @@ export class Snake extends Pet {
   id = "snake";
   attack = 20;
   interceptRate = 0.35;
-  price = 60000;
+  price = 6000;
 }
 
 export class Dragon extends Pet {
@@ -50,7 +50,7 @@ export class Dragon extends Pet {
   id = "dragon";
   attack = 35;
   interceptRate = 0.1;
-  price = 70000;
+  price = 7000;
 }
 
 export class Titan extends Pet {
@@ -58,7 +58,7 @@ export class Titan extends Pet {
   id = "titan";
   attack = 55;
   interceptRate = 0.4;
-  price = 88000;
+  price = 8800;
 }
 
 
@@ -67,5 +67,5 @@ export class Phoenix extends Pet {
   id = "phoenix";
   attack = 80;
   interceptRate = 0.2;
-  price = 110000;
+  price = 11000;
 }
