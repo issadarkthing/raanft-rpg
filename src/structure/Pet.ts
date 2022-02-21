@@ -2,10 +2,6 @@ import { Pet as BasePet } from "@jiman24/discordjs-rpg";
 import { applyMixins } from "../utils";
 import { Item } from "./Item";
 import { Player } from "./Player";
-import { Item } from "./Item";
-import { applyMixins } from "../utils";
-
-export interface Pet extends Item {};
 
 export interface Pet extends Item {};
 

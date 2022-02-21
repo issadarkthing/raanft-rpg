@@ -18,13 +18,15 @@ export class Helmet extends Armor {
 
   static get all(): Helmet[] {
     return data.map((x, i) => { 
-      const item = new Helmet(x);
+      const item = new HelmetItem(x);
       item.increaseArmor(i);
       item.increasePrice(i);
       return item;
     });
   }
 }
+
+export class HelmetItem extends Helmet {}
 
 const data = [
   { name: "Bucket hat", id: "bucket_hat" },

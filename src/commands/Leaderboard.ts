@@ -1,7 +1,8 @@
 import { Command } from "@jiman24/commandment";
 import { toNList } from "@jiman24/discordjs-utils";
 import { stripIndents } from "common-tags";
-import { Message, MessageEmbed } from "discord.js";
+import { Message } from "discord.js";
+import { MessageEmbed } from "../structure/MessageEmbed";
 import Enmap from "enmap";
 import { DateTime } from "luxon";
 import { client } from "../index";
@@ -14,6 +15,7 @@ export default class extends Command {
   description = "show leaderboard of rich players";
 
   private createLeaderboard(
+    msg: Message,
     type: string, 
     leaderboardID: string, 
     leaderboard: Enmap<string, Leaderboard[]>,
@@ -24,7 +26,7 @@ export default class extends Command {
     data = data.slice(0, 10);
 
     const list = data.map(x => `${x.name} ${code(x.coins)}`);
-    const embed = new MessageEmbed()
+    const embed = new MessageEmbed(msg.author)
       .setColor("RANDOM")
       .setTitle(`${type} Leaderboard`)
       .setDescription(
@@ -42,8 +44,8 @@ export default class extends Command {
     const dailyID = `${date.daysInYear}-${date.year}`;
     const monthID = `${date.month}-${date.year}`;
 
-    const dailyLeaderboard = this.createLeaderboard("Daily", dailyID, client.daily);
-    const monthlyLeaderboard = this.createLeaderboard("Monthly", monthID, client.monthly);
+    const dailyLeaderboard = this.createLeaderboard(msg, "Daily", dailyID, client.daily);
+    const monthlyLeaderboard = this.createLeaderboard(msg, "Monthly", monthID, client.monthly);
 
     const player = client.players.array()
       .sort((a, b) => b._coins - a._coins)

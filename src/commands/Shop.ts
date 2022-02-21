@@ -1,4 +1,5 @@
 import { Message } from "discord.js";
+import { MessageEmbed } from "../structure/MessageEmbed";
 import { 
   currency, 
   code, 
@@ -98,8 +99,7 @@ export default class extends Command {
         itemList += "\n----\n";
         itemList += `To select an item on index 1, use \`${prefix}${this.name} ${category} 1\``;
 
-        const embed = new MessageEmbed()
-          .setColor("RANDOM")
+        const embed = new MessageEmbed(msg.author)
           .setTitle(`${cap(category)} Shop`)
           .setDescription(itemList)
 

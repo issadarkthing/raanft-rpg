@@ -3,7 +3,6 @@ import { code, currency } from "../utils";
 import { Skill } from "./Skill";
 import { Pet } from "./Pet";
 import { MersenneTwister19937, Random } from "random-js";
-import { monsterNames } from "./MonsterData";
 import { Player } from "./Player";
 
 
@@ -14,22 +13,11 @@ export class Monster extends Fighter {
   private enableImage = false;
   private random: Random;
   
-  constructor(player: Player) {
-    super("");
-    const nameIndex = random.integer(0, names.length - 1);
-    const levelIndex = random.integer(0, levels.length - 1);
-    const name = names[nameIndex];
-    const level = levels[levelIndex];
-
-    this.name = `${level} ${name}`;
-    this.difficulty = player.level;
-    this.drop = random.integer(150, 500) * Math.round(1 + (this.difficulty / 10));
-    this.xpDrop = random.integer(10, 35) * Math.round(1 + (this.difficulty / 10))
-    this.attack = player.attack + this.randomAttrib();
-    this.hp = player.hp + this.randomAttrib();
-    this.armor = player.armor + (this.randomAttrib() / 100);
-    this.critChance = player.critChance + (this.randomAttrib() / 100);
-    this.critDamage = player.critDamage + random.integer(0.01, 0.5);
+  constructor(name: string, imageUrl: string, index: number) {
+    super(name);
+    const SEED = index;
+    this.random = new Random(MersenneTwister19937.seed(SEED));
+    this.difficulty = index + 1;
 
     if (this.enableImage) {
       this.imageUrl = imageUrl;
@@ -60,7 +48,7 @@ export class Monster extends Fighter {
   }
 
   static get all() {
-    return monsterNames.map((x, i) => new Monster(x.name, x.url, i));
+    return monsterNames.map((x, i) => new Monster(x, "", i));
   }
 
   show(player?: Player) {
@@ -71,6 +59,19 @@ export class Monster extends Fighter {
 
     return profile;
   }
+}
+
+
+function combinator(a: string[], b: string[]) {
+  const result: string[] = [];
+
+  for (const j of b) {
+    for (const i of a) {
+      result.push(`${i} ${j}`);
+    }
+  }
+
+  return result;
 }
 
 const levels = [
@@ -177,3 +178,5 @@ const names = [
   "Gargoyle Prince",
   "Evil Slime" ,
 ];
+
+const monsterNames = combinator(levels, names);
