@@ -4,9 +4,8 @@ import { stripIndents } from "common-tags";
 import { Message } from "discord.js";
 import { MessageEmbed } from "../structure/MessageEmbed";
 import Enmap from "enmap";
-import { DateTime } from "luxon";
 import { client } from "../index";
-import { Leaderboard } from "../structure/Client";
+import { Leaderboard, ILeaderboard } from "../structure/Leaderboard";
 import { bold, code, currency } from "../utils";
 
 export default class extends Command {
@@ -18,9 +17,9 @@ export default class extends Command {
     msg: Message,
     type: string, 
     leaderboardID: string, 
-    leaderboard: Enmap<string, Leaderboard[]>,
+    leaderboard: Enmap<string, ILeaderboard[]>,
   ) {
-    let data: Leaderboard[] = leaderboard.get(leaderboardID) || [];
+    let data: ILeaderboard[] = leaderboard.get(leaderboardID) || [];
     data.sort((a, b) => b.coins - a.coins);
 
     data = data.slice(0, 10);
@@ -30,7 +29,7 @@ export default class extends Command {
       .setColor("RANDOM")
       .setTitle(`${type} Leaderboard`)
       .setDescription(
-        stripIndents`${bold("Name | Coin")}
+        stripIndents`${bold(`Name | ${currency}`)}
         ${toNList(list)}
         `
       )
@@ -40,29 +39,20 @@ export default class extends Command {
 
   exec(msg: Message) {
 
-    const date = DateTime.now();
-    const dailyID = `${date.daysInYear}-${date.year}`;
-    const monthID = `${date.month}-${date.year}`;
+    const leaderboard = new Leaderboard();
+    const dailyID = leaderboard.dailyLeaderboardID;
+    const monthID = leaderboard.monthlyLeaderboardID;
+    const allTimeID = leaderboard.allTimeLeaderboardID;
 
-    const dailyLeaderboard = this.createLeaderboard(msg, "Daily", dailyID, client.daily);
-    const monthlyLeaderboard = this.createLeaderboard(msg, "Monthly", monthID, client.monthly);
-
-    const player = client.players.array()
-      .sort((a, b) => b._coins - a._coins)
-      .map((x, i) => `${i + 1}. ${x.name} \`${x._coins}\``)
-      .slice(0, 10)
-      .join("\n");
-
-    const embed = new MessageEmbed(msg.author)
-      .setColor("RANDOM")
-      .setTitle("All Time Leaderboard")
-      .setDescription(bold(`Name | ${currency}\n`) + player);
+    const dailyLeaderboard = this.createLeaderboard("Daily", dailyID, client.daily);
+    const monthlyLeaderboard = this.createLeaderboard("Monthly", monthID, client.monthly);
+    const allTimeLeaderboard = this.createLeaderboard("All Time", allTimeID, client.allTime)
 
     msg.channel.send({ 
       embeds: [
         dailyLeaderboard,
         monthlyLeaderboard,
-        embed,
+        allTimeLeaderboard,
       ] 
     });
   }

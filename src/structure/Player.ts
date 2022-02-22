@@ -5,7 +5,7 @@ import { code, timeLeft } from "../utils";
 import { Item } from "./Item";
 import { Potion } from "./Potion";
 import { DateTime } from "luxon";
-import { Leaderboard } from "../structure/Client";
+import { Leaderboard } from "../structure/Leaderboard";
 
 export class Player extends PlayerRPG {
   name: string;
@@ -70,35 +70,16 @@ export class Player extends PlayerRPG {
     return player;
   }
 
-  private update(userID: string, name: string, amount: number, leaderboard: Leaderboard[]) {
-    const user = leaderboard.find(x => x.id === userID);
-
-    if (user) {
-      user.coins += amount;
-    } else {
-      leaderboard.push({ id: userID, coins: amount, name: name });
-    }
-  }
 
   get coins() {
     return this._coins;
   }
 
   set coins(amount: number) {
-    if (amount > 0) {
-      const amountGot = amount - this._coins;
-      const date = DateTime.now();
+    const amountGot = amount - this._coins;
+    const leaderboard = new Leaderboard();
 
-      const dailyID = `${date.daysInYear}-${date.year}`;
-      const dailyPoints = client.daily.get(dailyID) || [];
-      this.update(this.id, this.name, amountGot, dailyPoints);
-      client.daily.set(dailyID, dailyPoints);
-
-      const monthID = `${date.month}-${date.year}`;
-      const monthlyPoints = client.daily.get(monthID) || [];
-      this.update(this.id, this.name, amountGot, monthlyPoints);
-      client.monthly.set(monthID, monthlyPoints);
-    }
+    leaderboard.update(this.id, this.name, amountGot);
 
     this._coins = amount;
   }
