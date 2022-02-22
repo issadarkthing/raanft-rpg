@@ -44,9 +44,9 @@ export default class extends Command {
     const monthID = leaderboard.monthlyLeaderboardID;
     const allTimeID = leaderboard.allTimeLeaderboardID;
 
-    const dailyLeaderboard = this.createLeaderboard("Daily", dailyID, client.daily);
-    const monthlyLeaderboard = this.createLeaderboard("Monthly", monthID, client.monthly);
-    const allTimeLeaderboard = this.createLeaderboard("All Time", allTimeID, client.allTime)
+    const dailyLeaderboard = this.createLeaderboard(msg, "Daily", dailyID, client.daily);
+    const monthlyLeaderboard = this.createLeaderboard(msg, "Monthly", monthID, client.monthly);
+    const allTimeLeaderboard = this.createLeaderboard(msg, "All Time", allTimeID, client.allTime)
 
     msg.channel.send({ 
       embeds: [
