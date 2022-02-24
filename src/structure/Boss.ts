@@ -2,7 +2,7 @@ import { Monster } from "./Monster";
 
 export class Boss extends Monster {
   static get all(): Boss[] {
-    return names.map((x, i) => new Monster(x, "", i * 20));
+    return names.map((x, i) => new Monster(x, "", (i + 1) * 20));
   }
 }
 
