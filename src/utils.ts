@@ -1,6 +1,8 @@
+import { Message } from "discord.js";
 import { DateTime } from "luxon";
 import { MersenneTwister19937, Random } from "random-js";
 import { isDeepStrictEqual } from "util"
+import { MessageEmbed } from "./structure/MessageEmbed";
 
 export const BROWN = "#c66a10";
 export const BLUE_BUTTON = "🔵";
@@ -126,4 +128,10 @@ export function timeLeft(time: Date) {
   const expiryDate = DateTime.fromJSDate(time);
   const diff = expiryDate.diffNow();
   return diff.toFormat("`(hh:mm:ss)`");
+}
+
+export function sendInfo(msg: Message, text: string, author = msg.author) {
+  return msg.channel.send({
+    embeds: [(new MessageEmbed(author)).setDescription(text)]
+  })
 }
