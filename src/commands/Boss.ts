@@ -21,6 +21,7 @@ export default class extends Command {
   maxPlayer = 3;
   waitTime = 1000 * 60 * 2; // 2 minutes
   description = "fight boss";
+  disable: boolean = true;
 
   async exec(msg: Message, args: string[]) {
 
