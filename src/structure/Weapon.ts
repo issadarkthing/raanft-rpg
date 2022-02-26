@@ -12,8 +12,10 @@ export abstract class Weapon extends BaseWeapon {
 
   static get all(): Weapon[] {
     const { Weapon: weaponsItems } = require("./WeaponItems");
+    const { Necklace } = require("./Necklaces");
     return [
       ...weaponsItems.all,
+      ...Necklace.all,
     ];
   }
 
