@@ -1,8 +1,6 @@
-import { ButtonHandler } from "@jiman24/discordjs-button";
 import { Message, User } from "discord.js";
 import { remove, sendInfo } from "../utils";
 import { Player } from "./Player";
-import { Prompt } from "@jiman24/discordjs-prompt";
 import { MessageEmbed } from "../structure/MessageEmbed";
 
 export abstract class Item {
