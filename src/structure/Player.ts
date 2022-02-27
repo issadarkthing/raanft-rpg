@@ -161,7 +161,8 @@ export class Player extends PlayerRPG {
     } = this;
 
     if (data.pet) {
-      delete data.pet.owner;
+      data.pet = { ...data.pet };
+      delete data.pet?.owner;
     }
 
     client.players.set(this.id, data);
