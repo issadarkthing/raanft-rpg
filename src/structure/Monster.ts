@@ -54,6 +54,10 @@ export class Monster extends Fighter {
   show(player?: Player) {
     const profile = super.show(player);
 
+    if (player) {
+      profile.setAuthor({ name: player.name, iconURL: player.imageUrl });
+    }
+
     profile.addField(`${currency} Drop`, code(this.drop), true);
     profile.addField("xp Drop", code(this.xpDrop), true);
 

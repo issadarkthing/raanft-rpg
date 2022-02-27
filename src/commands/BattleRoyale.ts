@@ -13,7 +13,7 @@ export default class extends Command {
   aliases = ["br"];
   maxPlayers = 5;
   fee = 10;
-  disable = true;
+  disable = false;
 
   async exec(msg: Message) {
 
