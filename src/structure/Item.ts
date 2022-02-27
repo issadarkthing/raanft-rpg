@@ -1,7 +1,9 @@
 import { ButtonHandler } from "@jiman24/discordjs-button";
-import { Message, MessageEmbed, User } from "discord.js";
+import { Message, User } from "discord.js";
 import { remove, sendInfo } from "../utils";
 import { Player } from "./Player";
+import { Prompt } from "@jiman24/discordjs-prompt";
+import { MessageEmbed } from "../structure/MessageEmbed";
 
 export abstract class Item {
   abstract name: string;
@@ -10,51 +12,23 @@ export abstract class Item {
   abstract apply(player: Player): void;
   abstract show(player?: Player | User): MessageEmbed;
 
-  private unequip() {
+  unequip(msg: Message, player: Player) {
 
-  }
+    const { Pet } = require("./Pet");
+    const { Skill } = require("./Skill");
 
-  // add buttons to the menu button with their respective actions
-  actions(msg: Message, menu: ButtonHandler, player: Player) {
-
-    if (player.equippedItems.some(x => x.id === this.id)) {
-
-      menu.addButton("unequip", () => {
-        const { Pet } = require("./Pet");
-        const { Skill } = require("./Skill");
-
-        if (this instanceof Pet) {
-          delete player.pet;
-        } else if (this instanceof Skill) {
-          delete player.skill;
-        }
-
-        player.equippedItems = remove(this, player.equippedItems);
-        player.save();
-
-        sendInfo(msg, `Successfully unequipped **${this.name}**`);
-      })
-
-    } else {
-
-      menu.addButton("equip", () => {
-
-        const equippedKind = player.equippedItems
-          .find(x => x.constructor.name === this.constructor.name);
-
-        if (equippedKind) {
-          player.equippedItems = remove(equippedKind, player.equippedItems);
-          sendInfo(msg, `Successfully unequipped **${equippedKind.name}**`);
-        }
-
-        player.equippedItems.push(this);
-        player.save();
-
-        sendInfo(msg, `Successfully equipped **${this.name}**`);
-
-      })
+    if (this instanceof Pet) {
+      delete player.pet;
+    } else if (this instanceof Skill) {
+      delete player.skill;
     }
+
+    player.equippedItems = remove(this, player.equippedItems);
+    player.save();
+
+    sendInfo(msg, `Successfully unequipped **${this.name}**`);
   }
+
 
   buy(msg: Message) {
     const player = Player.fromUser(msg.author);
