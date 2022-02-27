@@ -1,6 +1,6 @@
 import { ButtonHandler } from "@jiman24/discordjs-button";
 import { Message, MessageEmbed, User } from "discord.js";
-import { remove } from "../utils";
+import { remove, sendInfo } from "../utils";
 import { Player } from "./Player";
 
 export abstract class Item {
@@ -9,6 +9,10 @@ export abstract class Item {
   abstract price: number;
   abstract apply(player: Player): void;
   abstract show(player?: Player | User): MessageEmbed;
+
+  private unequip() {
+
+  }
 
   // add buttons to the menu button with their respective actions
   actions(msg: Message, menu: ButtonHandler, player: Player) {
@@ -28,7 +32,7 @@ export abstract class Item {
         player.equippedItems = remove(this, player.equippedItems);
         player.save();
 
-        msg.channel.send(`Successfully unequipped **${this.name}**`);
+        sendInfo(msg, `Successfully unequipped **${this.name}**`);
       })
 
     } else {
@@ -40,13 +44,13 @@ export abstract class Item {
 
         if (equippedKind) {
           player.equippedItems = remove(equippedKind, player.equippedItems);
-          msg.channel.send(`Successfully unequipped **${equippedKind.name}**`);
+          sendInfo(msg, `Successfully unequipped **${equippedKind.name}**`);
         }
 
         player.equippedItems.push(this);
         player.save();
 
-        msg.channel.send(`Successfully equipped **${this.name}**`);
+        sendInfo(msg, `Successfully equipped **${this.name}**`);
 
       })
     }
@@ -56,12 +60,12 @@ export abstract class Item {
     const player = Player.fromUser(msg.author);
 
     if (player.coins < this.price) {
-      msg.channel.send("Insufficient amount");
+      sendInfo(msg, "Insufficient amount");
       return;
     }
 
     if (player.inventory.some(x => x.id === this.id)) {
-      msg.channel.send("You already own this item");
+      sendInfo(msg, "You already own this item");
       return;
     }
 
@@ -69,7 +73,7 @@ export abstract class Item {
     player.inventory.push(this);
 
     player.save();
-    msg.channel.send(`Successfully bought **${this.name}**!`);
+    sendInfo(msg, `Successfully bought **${this.name}**!`);
   }
 
   static get(id: string) {
