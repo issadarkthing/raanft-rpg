@@ -3,7 +3,7 @@ import { Message, MessageEmbed } from "discord.js";
 import { Player } from "../structure/Player";
 import { Battle } from "@jiman24/discordjs-rpg";
 import { Monster } from "../structure/Monster";
-import { bold, currency, random } from "../utils";
+import { bold, currency, random, sendInfo } from "../utils";
 import { ButtonHandler } from "@jiman24/discordjs-button";
 
 class SearchMonster extends ButtonHandler {
@@ -66,11 +66,11 @@ export default class extends Command {
         player.coins += monster.drop;
         player.win++;
 
-        msg.channel.send(`${player.name} has earned ${bold(monster.drop)} ${currency}!`);
-        msg.channel.send(`${player.name} has earned ${bold(monster.xpDrop)} xp!`);
+        sendInfo(msg, `${player.name} has earned ${bold(monster.drop)} ${currency}!`);
+        sendInfo(msg, `${player.name} has earned ${bold(monster.xpDrop)} xp!`);
 
         if (currLevel !== player.level) {
-          msg.channel.send(`${player.name} is now on level ${bold(player.level)}!`);
+          sendInfo(msg, `${player.name} is now on level ${bold(player.level)}!`);
         }
       } 
 
