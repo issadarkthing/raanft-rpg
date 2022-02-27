@@ -7,7 +7,7 @@ export default class extends Command {
   name = "gamble";
   description = "slot machine game";
   symbols = ["🔵", "🔴", "⚪"];
-  throttle = 2 * 60 * 60 * 1000; // 2 hours
+  throttle = 8 * 60 * 60 * 1000; // 8 hours
 
   private allEqual(arr: string[]) {
     return arr.every(x => x === arr[0]);
