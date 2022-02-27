@@ -2,6 +2,7 @@ import { Client } from "./structure/Client";
 import path from "path";
 import { config } from "dotenv";
 import { DateTime } from "luxon";
+import { sendInfo } from "./utils";
 
 config();
 
@@ -24,7 +25,7 @@ client.commandManager.verbose = true;
 client.commandManager.registerCommands(path.resolve(__dirname, "./commands"));
 
 client.commandManager.registerCommandNotFoundHandler((msg, cmdName) => {
-  msg.channel.send(`Cannot find command "${cmdName}"`);
+  sendInfo(msg, `Cannot find command "${cmdName}"`);
 })
 
 client.commandManager.registerCommandOnThrottleHandler((msg, cmd, timeLeft) => {
@@ -32,13 +33,14 @@ client.commandManager.registerCommandOnThrottleHandler((msg, cmd, timeLeft) => {
     .plus({ milliseconds: timeLeft })
     .diffNow(["hours", "minutes", "seconds"]);
 
-  msg.channel.send(
+  sendInfo(
+    msg,
     `You cannot run ${cmd.name} command after **${hours}h ${minutes}m ${seconds}s**`
   );
 })
 
 client.commandManager.registerCommandErrorHandler((err, msg) => {
-  msg.channel.send((err as Error).message);
+  sendInfo(msg, (err as Error).message);
   console.log(err);
 })
 
