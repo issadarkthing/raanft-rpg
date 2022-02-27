@@ -1,7 +1,7 @@
 import { Command } from "@jiman24/commandment";
 import { Message } from "discord.js";
 import { Player } from "../structure/Player";
-import { random, validateAmount, validateNumber } from "../utils";
+import { random, sendInfo, validateAmount, validateNumber } from "../utils";
 
 export default class extends Command {
   name = "gamble";
@@ -41,12 +41,12 @@ export default class extends Command {
       .fill(null)
       .map(() => Array(3).fill(null).map(() => random.pick(this.symbols)));
 
-    let multiplier = 1;
+    let win = false;
 
     // row check
     for (const row of rows) {
       if (this.allEqual(row)) {
-        multiplier++;
+        win = true;
       }
     }
 
@@ -55,14 +55,14 @@ export default class extends Command {
       const column = this.getColumn(i, rows);
 
       if (this.allEqual(column)) {
-        multiplier++;
+        win = true;
       }
     }
 
     // cross check
     for (const row of this.getCrosses(rows)) {
       if (this.allEqual(row)) {
-        multiplier++;
+        win = true;
       }
     }
 
@@ -70,18 +70,18 @@ export default class extends Command {
       .map(x => "**|** " + x.join("") + " **|**")
       .join("\n");
 
-    msg.channel.send(result);
+    sendInfo(msg, result);
 
     player.coins -= amount;
 
-    if (multiplier === 1) {
-      msg.channel.send(`You lost **${amount}** coins!`);
-
-    } else {
+    if (win) {
+      const multiplier = 2;
       const winAmount = multiplier * amount;
       player.coins += winAmount;
-      msg.channel.send(`You won **(x${multiplier}) ${winAmount}** coins!`);
+      sendInfo(msg, `You won **(x${multiplier}) ${winAmount}** coins!`);
 
+    } else {
+      sendInfo(msg, `You lost **${amount}** coins!`);
     }
 
     player.save();
