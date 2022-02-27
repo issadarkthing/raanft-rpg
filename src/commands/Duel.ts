@@ -1,7 +1,7 @@
 import { Command } from "@jiman24/commandment";
 import { Message } from "discord.js";
 import { Player } from "../structure/Player";
-import { bold, currency, validateAmount, validateNumber } from "../utils";
+import { bold, currency, sendInfo, validateAmount, validateNumber } from "../utils";
 import { Battle } from "@jiman24/discordjs-rpg";
 import { ButtonHandler } from "@jiman24/discordjs-button";
 import { oneLine } from "common-tags";
@@ -67,9 +67,9 @@ export default class extends Command {
     winner.save();
     loser.save();
 
-    msg.channel.send(`${winner.name} wins over ${opponent.name}!`);
-    msg.channel.send(`${winner.name} earns ${bold(amount * 2)} ${currency}`);
-    msg.channel.send(`${loser.name} loses ${bold(amount)} ${currency}`);
+    sendInfo(msg, `${winner.name} wins over ${opponent.name}!`);
+    sendInfo(msg, `${winner.name} earns ${bold(amount * 2)} ${currency}`);
+    sendInfo(msg, `${loser.name} loses ${bold(amount)} ${currency}`, mentionedUser);
 
   }
 }
