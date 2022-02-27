@@ -30,7 +30,7 @@ export default class extends Command {
         throw new Error("cannot find item");
       }
 
-      const menu = new ButtonHandler(msg, item.show());
+      const menu = new ButtonHandler(msg, item.show(player));
 
       item.actions(msg, menu, player);
       menu.addCloseButton();

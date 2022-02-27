@@ -1,7 +1,7 @@
 import { Fighter, Skill as BaseSkill } from "@jiman24/discordjs-rpg";
 import { MessageEmbed } from "discord.js";
 import { oneLine } from "common-tags";
-import { formatPercent, code, applyMixins } from "../utils";
+import { formatPercent, code, applyMixins, setAuthor } from "../utils";
 import { Player } from "./Player";
 import { Item } from "./Item";
 
@@ -20,6 +20,14 @@ export abstract class Skill extends BaseSkill {
 
   apply(player: Player) {
     this.setOwner(player);
+  }
+
+  show(player?: Player) {
+    const embed = super.show();
+
+    if (player) setAuthor(embed, player);
+
+    return embed;
   }
 }
 

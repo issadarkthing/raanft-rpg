@@ -1,6 +1,6 @@
 import { Weapon as BaseWeapon } from "@jiman24/discordjs-rpg";
 import { Player } from "../structure/Player";
-import { applyMixins } from "../utils";
+import { applyMixins, setAuthor } from "../utils";
 import { Item } from "./Item";
 
 export interface Weapon extends Item {};
@@ -33,6 +33,14 @@ export abstract class Weapon extends BaseWeapon {
 
   apply(player: Player) {
     player.attack += this.attack;
+  }
+
+  show(player?: Player) {
+    const embed = super.show();
+
+    if (player) setAuthor(embed, player);
+
+    return embed;
   }
 }
 

@@ -1,5 +1,5 @@
 import { Pet as BasePet } from "@jiman24/discordjs-rpg";
-import { applyMixins } from "../utils";
+import { applyMixins, setAuthor } from "../utils";
 import { Item } from "./Item";
 import { Player } from "./Player";
 
@@ -20,6 +20,14 @@ export abstract class Pet extends BasePet {
 
   apply(player: Player) {
     this.setOwner(player);
+  }
+
+  show(player?: Player) {
+    const embed = super.show();
+
+    if (player) setAuthor(embed, player);
+
+    return embed;
   }
 }
 

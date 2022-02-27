@@ -8,7 +8,7 @@ export abstract class Item {
   abstract id: string;
   abstract price: number;
   abstract apply(player: Player): void;
-  abstract show(): MessageEmbed;
+  abstract show(player?: Player): MessageEmbed;
 
   // add buttons to the menu button with their respective actions
   actions(msg: Message, menu: ButtonHandler, player: Player) {

@@ -3,6 +3,7 @@ import { DateTime } from "luxon";
 import { MersenneTwister19937, Random } from "random-js";
 import { isDeepStrictEqual } from "util"
 import { MessageEmbed } from "./structure/MessageEmbed";
+import { Player } from "./structure/Player";
 
 export const BROWN = "#c66a10";
 export const BLUE_BUTTON = "🔵";
@@ -134,4 +135,9 @@ export function sendInfo(msg: Message, text: string, author = msg.author) {
   return msg.channel.send({
     embeds: [(new MessageEmbed(author)).setDescription(text)]
   })
+}
+
+export function setAuthor(embed: MessageEmbed, player: Player) {
+  embed.setAuthor({ name: player.name, iconURL: player.imageUrl });
+  return embed;
 }
