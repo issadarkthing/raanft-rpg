@@ -1,7 +1,7 @@
 import { Command } from "@jiman24/commandment";
 import { Message } from "discord.js";
 import { client } from "../index";
-import { bold } from "../utils";
+import { bold, sendInfo } from "../utils";
 import { Player } from "../structure/Player";
 
 export default class extends Command {
@@ -22,11 +22,13 @@ export default class extends Command {
 
     const { prefix } = client.commandManager;
 
-    msg.channel.send(`${bold(player.name)} has been created successfully!`);
-    msg.channel.send(
-      `Use \`${prefix}profile\` to checkout your profile`
-    )
-    msg.channel.send(`Use \`${prefix}hunt\` to start hunting monsters!`);
-    msg.channel.send(`Use \`${prefix}help\` to check out other commands!`);
+    let text = "";
+
+    text += `${bold(player.name)} has been created successfully!\n`;
+    text += `Use \`${prefix}profile\` to checkout your profile\n`;
+    text += `Use \`${prefix}hunt\` to start hunting monsters!\n`;
+    text += `Use \`${prefix}help\` to check out other commands!\n`;
+
+    sendInfo(msg, text);
   }
 }
