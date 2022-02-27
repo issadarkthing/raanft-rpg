@@ -13,9 +13,11 @@ export abstract class Armor extends BaseArmor {
   static get all(): Armor[] {
     const { Helmet } = require("./Helmet");
     const { Chest } = require("./Chest");
+    const { Boots } = require("./Boots");
     return [
       ...Helmet.all as Armor[],
       ...Chest.all as Armor[],
+      ...Boots.all as Armor[],
     ].sort((a, b) => a.price - b.price);
   }
 

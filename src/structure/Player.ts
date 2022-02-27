@@ -1,4 +1,4 @@
-import { User } from "discord.js";
+import { Message, User } from "discord.js";
 import { client } from "../index";
 import { Player as PlayerRPG } from "@jiman24/discordjs-rpg";
 import { code, timeLeft } from "../utils";
@@ -6,6 +6,9 @@ import { Item } from "./Item";
 import { Potion } from "./Potion";
 import { DateTime } from "luxon";
 import { Leaderboard } from "../structure/Leaderboard";
+import { Prompt } from "@jiman24/discordjs-prompt";
+import { ButtonHandler } from "@jiman24/discordjs-button";
+import { MessageEmbed } from "./MessageEmbed";
 
 export class Player extends PlayerRPG {
   name: string;
@@ -135,6 +138,15 @@ export class Player extends PlayerRPG {
     }
 
     return profile;
+  }
+
+  async levelUpBonus(msg: Message) {
+    const embed = new MessageEmbed(this.user);
+
+    // embed.setDescription();
+
+    const prompt = new ButtonHandler(msg, embed);
+
   }
 
   save() {
