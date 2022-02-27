@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { Message, User } from "discord.js";
 import { DateTime } from "luxon";
 import { MersenneTwister19937, Random } from "random-js";
 import { isDeepStrictEqual } from "util"
@@ -137,7 +137,13 @@ export function sendInfo(msg: Message, text: string, author = msg.author) {
   })
 }
 
-export function setAuthor(embed: MessageEmbed, player: Player) {
-  embed.setAuthor({ name: player.name, iconURL: player.imageUrl });
+export function setAuthor(embed: MessageEmbed, player: Player | User) {
+
+  if (player instanceof User) {
+    embed.setAuthor({ name: player.username, iconURL: player.displayAvatarURL() });
+  } else if (player instanceof Player) {
+    embed.setAuthor({ name: player.name, iconURL: player.imageUrl });
+  }
+
   return embed;
 }

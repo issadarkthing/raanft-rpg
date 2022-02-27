@@ -78,7 +78,7 @@ export default class extends Command {
 
         const selected = items[index];
 
-        const info = selected.show();
+        const info = selected.show(msg.author);
         const menu = new ButtonHandler(msg, info);
 
         menu.addButton("buy", () => {

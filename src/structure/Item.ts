@@ -1,5 +1,5 @@
 import { ButtonHandler } from "@jiman24/discordjs-button";
-import { Message, MessageEmbed } from "discord.js";
+import { Message, MessageEmbed, User } from "discord.js";
 import { remove } from "../utils";
 import { Player } from "./Player";
 
@@ -8,7 +8,7 @@ export abstract class Item {
   abstract id: string;
   abstract price: number;
   abstract apply(player: Player): void;
-  abstract show(player?: Player): MessageEmbed;
+  abstract show(player?: Player | User): MessageEmbed;
 
   // add buttons to the menu button with their respective actions
   actions(msg: Message, menu: ButtonHandler, player: Player) {
