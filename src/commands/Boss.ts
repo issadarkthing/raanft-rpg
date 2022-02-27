@@ -90,23 +90,28 @@ export default class extends Command {
 
       const winner = await battle.run();
 
-      if (winner.id === player.id) {
+      // won against boss
+      if (winner.id !== selectedBoss.id) {
 
-        const { drop, xpDrop } = selectedBoss;
+        for (const player of players) {
 
-        const currLevel = player.level;
-        player.addXP(xpDrop);
-        player.coins += drop;
-        player.win++;
+          const { drop, xpDrop } = selectedBoss;
 
-        player.save();
+          const currLevel = player.level;
+          player.addXP(xpDrop);
+          player.coins += drop;
+          player.win++;
 
-        msg.channel.send(`${player.name} has earned ${bold(drop)} ${currency}!`);
-        msg.channel.send(`${player.name} has earned ${bold(xpDrop)} xp!`);
+          player.save();
 
-        if (currLevel !== player.level) {
-          msg.channel.send(`${player.name} is now on level ${bold(player.level)}!`);
+          sendInfo(msg, `${player.name} has earned ${bold(drop)} ${currency}!`, player.user);
+          sendInfo(msg, `${player.name} has earned ${bold(xpDrop)} xp!`, player.user);
+
+          if (currLevel !== player.level) {
+            sendInfo(msg, `${player.name} is now on level ${bold(player.level)}!`, player.user);
+          }
         }
+
       }
 
       return;
