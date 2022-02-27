@@ -2,7 +2,7 @@ import { Command } from "@jiman24/commandment";
 import { Message, MessageEmbed } from "discord.js";
 import { ButtonHandler } from "@jiman24/discordjs-button";
 import { Player, PlayerNotFoundErr } from "../structure/Player";
-import { DIAMOND, remove, sendInfo, toNList, validateNumber } from "../utils";
+import { currency, DIAMOND, remove, sendInfo, toNList, validateNumber } from "../utils";
 import { oneLine } from "common-tags";
 import { Prompt } from "@jiman24/discordjs-prompt";
 
@@ -60,12 +60,18 @@ export default class extends Command {
         })
       }
 
+
       let give = false;
       menu.addButton("give", () => { give = true });
+
+      let sell = false;
+      menu.addButton("sell", () => { sell = true });
+
       menu.addCloseButton();
 
       await menu.run();
 
+      const prompt = new Prompt(msg);
 
       if (give) {
 
@@ -76,8 +82,6 @@ export default class extends Command {
 
         const embed = item.show(player)
           .setDescription("Please mention a player you want to give this item to");
-
-        const prompt = new Prompt(msg);
 
         const collected = await prompt.collect(embed);
         const member = collected.mentions.members?.first();
@@ -103,6 +107,33 @@ export default class extends Command {
             sendInfo(msg, `${member}'s character has not been created`);
           }
         }
+
+      } else if (sell) {
+
+        if (player.equippedItems.some(x => x.id === item.id)) {
+          item.unequip(msg, player);
+        }
+
+
+        const sellPrice = Math.round(item.price / 2);
+        const embed = item.show(player)
+          .setDescription(`This item will be sold for only ${sellPrice} ${currency}`);
+
+        const sellMenu = new ButtonHandler(msg, embed);
+
+        sellMenu.addButton("confirm", () => {
+
+          player.coins += sellPrice;
+          player.inventory = remove(item, player.inventory);
+
+          player.save();
+          sendInfo(msg, `Successfully sold ${item.name} for ${sellPrice} ${currency}`);
+
+        })
+
+        sellMenu.addCloseButton();
+
+        await sellMenu.run();
 
       }
 
