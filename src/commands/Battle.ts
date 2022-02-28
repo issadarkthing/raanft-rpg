@@ -4,7 +4,8 @@ import { Message } from "discord.js";
 import { Monster } from "../structure/Monster";
 import { Pagination } from "../structure/Pagination";
 import { Battle } from "@jiman24/discordjs-rpg";
-import { bold, currency, random } from "../utils";
+import { bold, currency, random, sendInfo } from "../utils";
+import { stripIndents } from "common-tags";
 
 export default class extends Command {
   name = "battle";
@@ -40,11 +41,15 @@ export default class extends Command {
       player.addXP(monster.xpDrop);
       player.coins += monster.drop;
 
-      msg.channel.send(`${player.name} has earned ${bold(monster.drop)} ${currency}!`);
-      msg.channel.send(`${player.name} has earned ${bold(monster.xpDrop)} xp!`);
+      sendInfo(
+        msg, 
+        stripIndents`${player.name} has earned ${bold(monster.drop)} ${currency}!
+        ${player.name} has earned ${bold(monster.xpDrop)} xp!`,
+      );
 
       if (currLevel !== player.level) {
-        msg.channel.send(`${player.name} is now on level ${bold(player.level)}!`);
+        sendInfo(msg, `${player.name} is now on level ${bold(player.level)}!`);
+        await player.levelUpBonus(msg);
       }
 
       player.currentMonster = position;

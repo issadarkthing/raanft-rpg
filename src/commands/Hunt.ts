@@ -5,6 +5,7 @@ import { Battle } from "@jiman24/discordjs-rpg";
 import { Monster } from "../structure/Monster";
 import { bold, currency, random, sendInfo } from "../utils";
 import { ButtonHandler } from "@jiman24/discordjs-button";
+import { stripIndents } from "common-tags";
 
 class SearchMonster extends ButtonHandler {
   player: Player;
@@ -66,11 +67,15 @@ export default class extends Command {
         player.coins += monster.drop;
         player.win++;
 
-        sendInfo(msg, `${player.name} has earned ${bold(monster.drop)} ${currency}!`);
-        sendInfo(msg, `${player.name} has earned ${bold(monster.xpDrop)} xp!`);
+        sendInfo(
+          msg, 
+          stripIndents`${player.name} has earned ${bold(monster.drop)} ${currency}!
+          ${player.name} has earned ${bold(monster.xpDrop)} xp!`,
+        );
 
         if (currLevel !== player.level) {
           sendInfo(msg, `${player.name} is now on level ${bold(player.level)}!`);
+          await player.levelUpBonus(msg);
         }
       } 
 

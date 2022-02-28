@@ -1,14 +1,25 @@
 import { Message, User } from "discord.js";
 import { client } from "../index";
 import { Player as PlayerRPG } from "@jiman24/discordjs-rpg";
-import { code, timeLeft } from "../utils";
+import { bold, code, sendInfo, timeLeft } from "../utils";
 import { Item } from "./Item";
 import { Potion } from "./Potion";
 import { DateTime } from "luxon";
 import { Leaderboard } from "../structure/Leaderboard";
-import { Prompt } from "@jiman24/discordjs-prompt";
 import { ButtonHandler } from "@jiman24/discordjs-button";
 import { MessageEmbed } from "./MessageEmbed";
+import { stripIndents } from "common-tags";
+
+
+interface Attributes {
+  attack: number;
+  hp: number;
+  armor: number;
+  critChance: number;
+  critDamage: number;
+}
+
+type AttributeNames = keyof Attributes;
 
 export class Player extends PlayerRPG {
   name: string;
@@ -21,6 +32,13 @@ export class Player extends PlayerRPG {
   inventory: Item[] = [];
   equippedItems: Item[] = [];
   activePotions: { potion: Potion, expires: Date }[] = [];
+  bonusAttribs: Attributes = {
+    attack: 0,
+    hp: 0,
+    armor: 0,
+    critChance: 0,
+    critDamage: 0,
+  };
 
   constructor(user: User, imageUrl: string) {
     super(user);
@@ -43,6 +61,14 @@ export class Player extends PlayerRPG {
     player.hp += offset * 10
     player.attack += offset * 2
     player.critDamage += offset * 0.01;
+
+    // apply bonus stat
+    player.attack += player.bonusAttribs.attack;
+    player.hp += player.bonusAttribs.hp;
+    player.armor += player.bonusAttribs.armor;
+    player.critChance += player.bonusAttribs.critChance;
+    player.critDamage += player.bonusAttribs.critDamage;
+
 
     player.inventory = player.inventory
       .filter(x => !!x)
@@ -143,10 +169,66 @@ export class Player extends PlayerRPG {
   async levelUpBonus(msg: Message) {
     const embed = new MessageEmbed(this.user);
 
-    // embed.setDescription();
+    embed.setDescription(
+      stripIndents`Please select which attribute you want to upgrade:
+        +1 attack
+        +5 hp
+        +0.1% armor (max 60%)
+        +x0.1 crit damage
+        +1% crit chance (max 60%)
+      `
+    );
 
-    const prompt = new ButtonHandler(msg, embed);
+    const menu = new ButtonHandler(msg, embed);
 
+    let attribute!: AttributeNames;
+
+    menu.addButton("attack", () => { attribute = "attack" });
+    menu.addButton("hp", () => { attribute = "hp" });
+    menu.addButton("armor", () => { attribute = "armor" });
+    menu.addButton("crit chance", () => { attribute = "critChance" });
+    menu.addButton("crit damage", () => { attribute = "critDamage" });
+
+    await menu.run();
+
+    if (attribute === "armor" && this.armor >= 0.6) {
+      sendInfo(msg, "Please select different attribute as armor has reached its max");
+      this.levelUpBonus(msg);
+
+    } else if (attribute === "critChance" && this.critChance >= 0.6) {
+      sendInfo(msg, "Please select different attribute as crit chance has reached its max");
+      this.levelUpBonus(msg);
+
+    }
+
+    let text = "";
+
+    switch (attribute) {
+      case "attack": 
+        this.bonusAttribs.attack += 1; 
+        text = "+1 attack";
+        break;
+      case "hp": 
+        this.bonusAttribs.hp += 5; 
+        text = "+5 hp";
+        break;
+      case "armor": 
+        this.bonusAttribs.armor += 0.001; 
+        text = "+0.1% armor";
+        break;
+      case "critDamage": 
+        this.bonusAttribs.critDamage += 0.1; 
+        text = "+x0.1 crit damage";
+        break;
+      case "critChance": 
+        this.bonusAttribs.critChance += 0.01; 
+        text = "+1% crit chance";
+        break;
+    }
+
+    sendInfo(msg, `Successfully increased player bonus stat ${bold(text)}`);
+
+    this.save();
   }
 
   save() {

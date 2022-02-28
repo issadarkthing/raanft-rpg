@@ -14,7 +14,7 @@ import {
 import { ButtonHandler } from "@jiman24/discordjs-button";
 import { Battle } from "@jiman24/discordjs-rpg";
 import { MessageEmbed } from "../structure/MessageEmbed";
-import { oneLine } from "common-tags";
+import { oneLine, stripIndents } from "common-tags";
 
 export default class extends Command {
   name = "boss";
@@ -104,11 +104,16 @@ export default class extends Command {
 
           player.save();
 
-          sendInfo(msg, `${player.name} has earned ${bold(drop)} ${currency}!`, player.user);
-          sendInfo(msg, `${player.name} has earned ${bold(xpDrop)} xp!`, player.user);
+          sendInfo(
+            msg, 
+            stripIndents`${player.name} has earned ${bold(drop)} ${currency}!
+            ${player.name} has earned ${bold(xpDrop)} xp!`,
+            player.user,
+          );
 
           if (currLevel !== player.level) {
             sendInfo(msg, `${player.name} is now on level ${bold(player.level)}!`, player.user);
+            await player.levelUpBonus(msg);
           }
         }
 
