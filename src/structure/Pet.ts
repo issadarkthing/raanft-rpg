@@ -18,6 +18,11 @@ export abstract class Pet extends BasePet {
     ];
   }
 
+  toJSON(): string {
+    const {owner, ...data} = this;
+    return JSON.stringify(data);
+  }
+
   apply(player: Player) {
     this.setOwner(player);
   }
